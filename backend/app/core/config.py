@@ -22,10 +22,13 @@ class Settings(BaseSettings):
     ]
     
     # Database / Supabase
+    DATABASE_URL: str = Field(default="", alias="DATABASE_URL")
     SUPABASE_URL: str = Field(default="", alias="SUPABASE_URL")
     SUPABASE_KEY: str = Field(default="", alias="SUPABASE_KEY")
     SUPABASE_SERVICE_ROLE_KEY: str = Field(default="", alias="SUPABASE_SERVICE_ROLE_KEY")
-    
+    # Auth & Security
+    JWT_SECRET: str = Field(default="civicflow-super-secret-key-change-in-production-only", alias="JWT_SECRET")
+
     # AI / Gemini
     GEMINI_API_KEY: str = Field(default="", alias="GEMINI_API_KEY")
     GEMINI_MODEL: str = "gemini-3.8-flash"

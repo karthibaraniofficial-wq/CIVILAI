@@ -13,7 +13,7 @@ from app.core.config import settings
 from app.db.repository import repo
 from app.models.entities import Profile, UserRole
 
-SECRET_KEY = "civicflow-super-secret-key-change-in-production-only"
+SECRET_KEY = settings.JWT_SECRET or "civicflow-super-secret-key-change-in-production-only"
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 60 * 24
 
