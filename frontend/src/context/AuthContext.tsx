@@ -38,11 +38,28 @@ const AuthContext = createContext<AuthContextType>({
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<UserProfile | null>(() => {
-    const saved = localStorage.getItem('civicflow_user');
-    return saved ? JSON.parse(saved) : defaultUser;
+    try {
+      if (typeof window !== 'undefined' && window.localStorage) {
+        const saved = window.localStorage.getItem('civicflow_user');
+        if (saved && saved !== 'undefined' && saved !== 'null') {
+          return JSON.parse(saved);
+        }
+      }
+    } catch (e) {
+      console.warn('Could not read user from localStorage:', e);
+    }
+    return defaultUser;
   });
+
   const [token, setToken] = useState<string | null>(() => {
-    return localStorage.getItem('civicflow_token') || 'demo-token';
+    try {
+      if (typeof window !== 'undefined' && window.localStorage) {
+        return window.localStorage.getItem('civicflow_token') || 'demo-token';
+      }
+    } catch (e) {
+      console.warn('Could not read token from localStorage:', e);
+    }
+    return 'demo-token';
   });
 
   const role: UserRole = user?.role || 'CITIZEN';

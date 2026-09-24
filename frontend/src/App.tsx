@@ -21,22 +21,33 @@ export const AppContent: React.FC = () => {
     setCurrentTab('citizen');
   };
 
-  // Setup Server-Sent Events (SSE) for live platform updates
+  // Setup Server-Sent Events (SSE) for live platform updates (safeguarded for serverless)
   useEffect(() => {
-    const eventSource = new EventSource('/api/v1/events/stream');
-
-    eventSource.onmessage = (event) => {
-      try {
-        const payload = JSON.parse(event.data);
-        console.log('Realtime Event Received:', payload);
-        handleRefresh();
-      } catch (e) {
-        // Ping or malformed payload
+    let eventSource: EventSource | null = null;
+    try {
+      if (typeof window !== 'undefined' && 'EventSource' in window) {
+        eventSource = new EventSource('/api/v1/events/stream');
+        eventSource.onmessage = (event) => {
+          try {
+            const payload = JSON.parse(event.data);
+            handleRefresh();
+          } catch (e) {
+            // Ping or malformed payload
+          }
+        };
+        eventSource.onerror = () => {
+          // Gracefully close on serverless timeout to avoid reconnect loop
+          eventSource?.close();
+        };
       }
-    };
+    } catch (e) {
+      console.warn('Realtime SSE stream not active:', e);
+    }
 
     return () => {
-      eventSource.close();
+      try {
+        eventSource?.close();
+      } catch {}
     };
   }, []);
 

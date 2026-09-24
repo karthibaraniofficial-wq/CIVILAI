@@ -7,7 +7,7 @@
       "destination": "/api/index.py?__path=/$1"
     },
     {
-      "source": "/((?!api/).*)",
+      "source": "/((?!api/|assets/|.*\\.[a-zA-Z0-9]+$).*)",
       "destination": "/index.html"
     }
   ]
