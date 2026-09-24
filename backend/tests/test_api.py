@@ -1,6 +1,10 @@
 """
 CIVICFLOW AI — Backend Unit & Integration Tests
 """
+import sys
+from pathlib import Path
+sys.path.insert(0, str(Path(__file__).parent.parent))
+
 import pytest
 from httpx import ASGITransport, AsyncClient
 from main import app

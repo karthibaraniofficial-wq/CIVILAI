@@ -56,19 +56,28 @@ class ComplaintUnderstandingAgent(BaseAgent[ComplaintUnderstandingInput, Complai
         text = f"{input_data.title} {input_data.description}".lower()
         
         # Category detection heuristics
+        valid_cats = ["pothole", "garbage", "water_supply", "drainage", "streetlights", "electricity", "public_health", "park", "public_infrastructure"]
+        raw = (input_data.raw_category or "").lower().strip()
+
         cat = "public_infrastructure"
-        if any(w in text for w in ["pothole", "crater", "road", "asphalt", "flyover", "footpath", "bridge"]):
+        if raw in valid_cats:
+            cat = raw
+        elif any(w in text for w in ["pothole", "crater", "asphalt", "sinkhole", "road cavity"]):
             cat = "pothole"
-        elif any(w in text for w in ["garbage", "trash", "waste", "dump", "debris", "litter"]):
-            cat = "garbage"
-        elif any(w in text for w in ["water", "pipe", "burst", "leak", "drinking water", "supply"]):
-            cat = "water_supply"
-        elif any(w in text for w in ["drain", "sewage", "gutter", "overflow", "stagnant"]):
+        elif any(w in text for w in ["chemical", "toxic", "poison", "vector", "fumigation", "pathogen"]):
+            cat = "public_health"
+        elif any(w in text for w in ["electric", "wire", "spark", "transformer", "shock", "voltage", "cable"]):
+            cat = "electricity"
+        elif any(w in text for w in ["tree", "branch", "neem", "eucalyptus", "horticulture", "garden"]):
+            cat = "park"
+        elif any(w in text for w in ["drain", "sewage", "gutter", "sewer", "manhole", "cesspool"]):
             cat = "drainage"
+        elif any(w in text for w in ["water", "pipe", "burst", "leak", "drinking water", "supply", "geyser"]):
+            cat = "water_supply"
+        elif any(w in text for w in ["garbage", "trash", "waste", "dump", "litter", "biohazard", "syringe", "refuse"]):
+            cat = "garbage"
         elif any(w in text for w in ["light", "streetlight", "dark", "lamp", "pole"]):
             cat = "streetlights"
-        elif any(w in text for w in ["electric", "wire", "spark", "transformer", "shock"]):
-            cat = "electricity"
 
         urgency_cues = []
         for cue in ["danger", "school", "hospital", "bus", "swerving", "spark", "child", "accident", "emergency", "severe"]:

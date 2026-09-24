@@ -63,6 +63,18 @@ class VisionAnalysisAgent(BaseAgent[VisionAnalysisInput, VisionAnalysisOutput]):
             severity = 8.5
             hazards.append("electrocution_risk")
             hazards.append("nighttime_pedestrian_vulnerability")
+        elif "park" in cat or "tree" in cat:
+            objects.extend(["fallen_timber", "damaged_branch", "blocked_carriageway"])
+            severity = 7.5
+            hazards.append("road_obstruction_hazard")
+        elif "health" in cat or "chemical" in cat:
+            objects.extend(["chemical_container", "unidentified_effluent", "environmental_spill"])
+            severity = 8.5
+            hazards.append("toxic_exposure_hazard")
+        elif "infrastructure" in cat:
+            objects.extend(["concrete_spalling", "exposed_rebar", "structural_joint"])
+            severity = 7.5
+            hazards.append("structural_failure_risk")
 
         return VisionAnalysisOutput(
             is_authentic_civic_damage=True,

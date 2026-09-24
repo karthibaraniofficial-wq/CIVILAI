@@ -1,13 +1,13 @@
 # CIVICFLOW AI — Project State & Memory
 
 ## Current Phase
-Milestone 1 — Architecture & Foundation Setup (COMPLETE)
+Milestone 2 & 3 — Complete Multi-Agent Grievance Orchestrator, Operations Center, Escalation Engine & Analytics (COMPLETE)
 
 ## Current Module
-Foundation: Multi-Agent Orchestrator, Dual Persistence, Backend REST API, Database Schema, and Frontend Shell
+Full-Stack SaaS Platform: Multi-Agent AI Framework, Dual Database Architecture, Supabase Migrations & RLS, Deterministic SLA & Escalation Subsystem, Spatial GIS Operations Dashboard, Real-Time Analytics, and Citizen Portal.
 
 ## Current Task
-Completed Milestone 1 Foundation. Preparing for Milestone 2 Multi-Agent Engine Deep-Dive & Live Geo-Map / UI Refinements.
+All major features implemented and rigorously verified. 12/12 backend tests passing, frontend TypeScript compilation and Vite production build verified with 0 errors.
 
 ## Status Matrix
 - [x] Environment Discovery (Node v24.19, npm 11.17, Python 3.14, Git)
@@ -17,91 +17,72 @@ Completed Milestone 1 Foundation. Preparing for Milestone 2 Multi-Agent Engine D
 - [x] Stack Documentation (`STACK.md`)
 - [x] Roadmap Definition (`ROADMAP.md`)
 - [x] Architecture Decisions (`DECISIONS.md`)
-- [x] Database Schema DDL (`supabase/schema.sql` - 14 relational tables, enums, indexes)
-- [x] Database Seed Data (`supabase/seed.sql` - 6 departments, SLA rules, demo profiles, canonical demo case)
+- [x] Database Schema Migrations (`supabase/migrations/20260924000001_civicflow_foundation.sql`)
+- [x] Row Level Security (RLS) Policies (`supabase/migrations/20260924000002_rls_and_policies.sql`)
+- [x] Database Seed Data (`supabase/seed.sql`)
 - [x] Backend FastAPI App (`backend/main.py`)
-- [x] Configuration Management (`backend/app/core/config.py`, `.env.example`, `.gitignore`)
-- [x] EventBus & Server-Sent Events Streaming (`backend/app/core/events.py`, `api/v1/events.py`)
+- [x] JWT Authentication & Role-Based Access Control (`backend/app/core/security.py`, `backend/app/api/v1/auth.py`)
+- [x] EventBus & Server-Sent Events Streaming (`backend/app/core/events.py`, `backend/app/api/v1/events.py`)
 - [x] 14 Domain Entities & Enums typed in Pydantic v2 (`backend/app/models/entities.py`)
-- [x] Thread-Safe Persistence Repository with Initial Seed (`backend/app/db/repository.py`)
-- [x] Multi-Agent Framework (`BaseAgent[InputT, OutputT]`, typed schemas, metrics, audit logs)
-- [x] 6 Core Specialized Agents Implemented:
-  - Complaint Understanding Agent (`complaint_agent.py`)
-  - Vision Analysis Agent (`vision_agent.py`)
-  - Department Routing Agent (`routing_agent.py`)
-  - Priority and SLA Agent (`priority_agent.py`)
-  - Follow-up Agent (`followup_agent.py`)
-  - Escalation Agent (`escalation_agent.py`)
-- [x] Multi-Agent Orchestrator Pipeline (`orchestrator.py`)
-- [x] REST API v1 Suite (`health`, `complaints`, `departments`, `agents`, `escalations`, `audit`, `events`, `demo`)
-- [x] Backend Automated Tests (`pytest` - 4 passing tests, 100% success rate)
-- [x] Frontend React + TypeScript + Tailwind Shell (`App.tsx`, `Navbar.tsx`, `DemoControlBar.tsx`, `CitizenPortal.tsx`, `OperationsBoard.tsx`, `AdminGovernance.tsx`)
-- [x] Hackathon Presentation Demo Harness (`CIVIC-DEMO-01`, SLA acceleration, reset)
+- [x] Database Service Abstraction (`backend/app/db/database.py`)
+- [x] Thread-Safe Persistence Repository pre-seeded with 10 Realistic Complaints across Delhi NCR (`backend/app/db/repository.py`)
+- [x] Reusable Multi-Agent Framework:
+  - Base Agent with Retries, Timeouts, Metrics, and Audit (`backend/app/agents/core/base.py`)
+  - Typed Input/Output Schemas (`backend/app/agents/core/schemas.py`)
+  - Complaint Understanding Agent (`backend/app/agents/complaint/agent.py`)
+  - Vision Analysis Agent (`backend/app/agents/vision/agent.py`)
+  - Department Routing Agent (`backend/app/agents/routing/agent.py`)
+  - Priority & SLA Agent (`backend/app/agents/priority/agent.py`)
+  - Orchestration Pipeline (`backend/app/agents/core/orchestrator.py`)
+- [x] Autonomous Follow-Up & Escalation Subsystem (`backend/app/services/sla_engine.py`)
+- [x] Real-Time Database Analytics Service (`backend/app/services/analytics_service.py`, `backend/app/api/v1/analytics.py`)
+- [x] Complete REST API v1 Suite (`health`, `auth`, `complaints`, `departments`, `agents`, `escalations`, `analytics`, `audit`, `events`, `demo`)
+- [x] Backend Automated Test Suite: 12/12 passing tests (`pytest backend/tests -v`)
+- [x] Frontend React + TypeScript + Tailwind Application:
+  - AuthContext with Role Personas & Persistent Token (`frontend/src/context/AuthContext.tsx`)
+  - Navigation & Portal Switcher (`frontend/src/components/common/Navbar.tsx`)
+  - Hackathon Demo Control Bar (`frontend/src/components/common/DemoControlBar.tsx`)
+  - Interactive Spatial Leaflet GIS Map (`frontend/src/components/map/CivicMap.tsx`)
+  - Citizen Grievance Portal & Status Tracker (`frontend/src/pages/citizen/CitizenPortal.tsx`)
+  - Municipal Operations Center Board (`frontend/src/pages/municipal/OperationsBoard.tsx`)
+  - Real-Time Analytics Dashboard (`frontend/src/pages/analytics/AnalyticsDashboard.tsx`)
+  - Admin Governance & Agent Fleet Inspector (`frontend/src/pages/admin/AdminGovernance.tsx`)
+- [x] Frontend Production Build Verified: `tsc && vite build` (0 errors, 15.72s)
 
 ## Blocked
 None.
 
 ## Known Errors
-None. Backend tests verified 100% pass.
+None. Backend tests verified 100% pass, frontend build verified 100% pass.
 
-## Next Recommended Milestone
-Milestone 2: Multi-Agent Engine Deepening (Gemini Multimodal Live Connection, Enhanced Spatial GIS Map with Leaflet / OpenStreetMap markers, Field Crew Dispatch Details).
-
-## Changed Files
-- `PROJECT_RULES.md`
-- `SPEC.md`
-- `ARCHITECTURE.md`
-- `STACK.md`
-- `ROADMAP.md`
-- `DECISIONS.md`
-- `STATE.md`
-- `CHANGELOG.md`
-- `KNOWN_ISSUES.md`
-- `VERIFICATION.md`
-- `RELEASE_NOTES.md`
-- `.env.example`
-- `.gitignore`
-- `supabase/schema.sql`
+## Changed Files in Current Session
+- `supabase/migrations/20260924000001_civicflow_foundation.sql`
+- `supabase/migrations/20260924000002_rls_and_policies.sql`
 - `supabase/seed.sql`
-- `backend/requirements.txt`
-- `backend/main.py`
-- `backend/app/core/config.py`
-- `backend/app/core/events.py`
-- `backend/app/models/entities.py`
+- `backend/app/core/security.py`
+- `backend/app/db/database.py`
 - `backend/app/db/repository.py`
-- `backend/app/agents/base.py`
-- `backend/app/agents/schemas.py`
-- `backend/app/agents/complaint_agent.py`
-- `backend/app/agents/vision_agent.py`
-- `backend/app/agents/routing_agent.py`
-- `backend/app/agents/priority_agent.py`
-- `backend/app/agents/followup_agent.py`
-- `backend/app/agents/escalation_agent.py`
-- `backend/app/agents/orchestrator.py`
-- `backend/app/api/v1/health.py`
-- `backend/app/api/v1/complaints.py`
-- `backend/app/api/v1/departments.py`
-- `backend/app/api/v1/agents.py`
-- `backend/app/api/v1/escalations.py`
-- `backend/app/api/v1/audit.py`
-- `backend/app/api/v1/events.py`
-- `backend/app/api/v1/demo.py`
-- `backend/tests/test_api.py`
-- `frontend/package.json`
-- `frontend/vite.config.ts`
-- `frontend/tsconfig.json`
-- `frontend/tsconfig.node.json`
-- `frontend/tailwind.config.js`
-- `frontend/postcss.config.js`
-- `frontend/index.html`
-- `frontend/src/index.css`
-- `frontend/src/types/index.ts`
-- `frontend/src/services/api.ts`
-- `frontend/src/components/common/Navbar.tsx`
-- `frontend/src/components/common/DemoControlBar.tsx`
+- `backend/app/services/sla_engine.py`
+- `backend/app/services/analytics_service.py`
+- `backend/app/agents/core/base.py`
+- `backend/app/agents/core/schemas.py`
+- `backend/app/agents/core/orchestrator.py`
+- `backend/app/agents/complaint/agent.py`
+- `backend/app/agents/vision/agent.py`
+- `backend/app/agents/routing/agent.py`
+- `backend/app/agents/priority/agent.py`
+- `backend/app/api/v1/auth.py`
+- `backend/app/api/v1/analytics.py`
+- `backend/main.py`
+- `backend/tests/test_agents.py`
+- `backend/tests/test_sla_escalation.py`
+- `frontend/src/context/AuthContext.tsx`
+- `frontend/src/components/map/CivicMap.tsx`
+- `frontend/src/pages/analytics/AnalyticsDashboard.tsx`
 - `frontend/src/pages/citizen/CitizenPortal.tsx`
 - `frontend/src/pages/municipal/OperationsBoard.tsx`
-- `frontend/src/pages/admin/AdminGovernance.tsx`
+- `frontend/src/components/common/Navbar.tsx`
 - `frontend/src/App.tsx`
-- `frontend/src/main.tsx`
-- `frontend/public/favicon.svg`
+- `VERIFICATION.md`
+- `STATE.md`
+- `CHANGELOG.md`

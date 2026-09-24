@@ -9,7 +9,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.api.v1 import (
-    agents, audit, complaints, demo, departments, escalations, events, health
+    agents, analytics, audit, auth, complaints, demo, departments, escalations, events, health
 )
 from app.core.config import settings
 
@@ -48,10 +48,12 @@ app.add_middleware(
 # Register API v1 Routers
 api_prefix = settings.API_V1_STR
 app.include_router(health.router, prefix=api_prefix)
+app.include_router(auth.router, prefix=f"{api_prefix}/auth", tags=["Authentication"])
 app.include_router(complaints.router, prefix=f"{api_prefix}/complaints", tags=["Complaints"])
 app.include_router(departments.router, prefix=f"{api_prefix}/departments", tags=["Departments"])
 app.include_router(agents.router, prefix=f"{api_prefix}/agents", tags=["Multi-Agent System"])
 app.include_router(escalations.router, prefix=f"{api_prefix}/escalations", tags=["Escalations"])
+app.include_router(analytics.router, prefix=f"{api_prefix}/analytics", tags=["Analytics"])
 app.include_router(audit.router, prefix=f"{api_prefix}/audit", tags=["Audit Trail"])
 app.include_router(events.router, prefix=f"{api_prefix}/events", tags=["Realtime Events"])
 app.include_router(demo.router, prefix=f"{api_prefix}/demo", tags=["Demo Mode"])
