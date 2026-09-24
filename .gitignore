@@ -4,6 +4,7 @@ dist/
 build/
 .vite/
 .npm/
+.vercel/
 *.log
 
 # Python
@@ -54,3 +55,6 @@ tmp/
 # OS Metadata
 .DS_Store
 Thumbs.db
+
+.vercel
+.env*

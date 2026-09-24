@@ -5,8 +5,11 @@ dual-persistence support, and realtime streaming.
 """
 from contextlib import asynccontextmanager
 import logging
-from fastapi import FastAPI
+import os
+from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import FileResponse
+from fastapi.staticfiles import StaticFiles
 
 from app.api.v1 import (
     agents, analytics, audit, auth, complaints, demo, departments, escalations, events, health
@@ -59,8 +62,18 @@ app.include_router(events.router, prefix=f"{api_prefix}/events", tags=["Realtime
 app.include_router(demo.router, prefix=f"{api_prefix}/demo", tags=["Demo Mode"])
 
 
-@app.get("/")
-async def root():
+# Frontend Dist Static Serving for Vercel Serverless Fallback
+DIST_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "frontend", "dist"))
+ASSETS_DIR = os.path.join(DIST_DIR, "assets")
+
+if os.path.isdir(ASSETS_DIR):
+    app.mount("/assets", StaticFiles(directory=ASSETS_DIR), name="static_assets")
+
+
+@app.get("/api")
+@app.get("/api/v1")
+@app.get("/api/health")
+async def api_health():
     return {
         "service": settings.PROJECT_NAME,
         "version": settings.VERSION,
@@ -68,6 +81,30 @@ async def root():
         "api_v1": api_prefix,
         "status": "operational"
     }
+
+
+@app.get("/")
+async def root():
+    index_path = os.path.join(DIST_DIR, "index.html")
+    if os.path.isfile(index_path):
+        return FileResponse(index_path)
+    return {
+        "service": settings.PROJECT_NAME,
+        "version": settings.VERSION,
+        "docs_url": "/docs",
+        "api_v1": api_prefix,
+        "status": "operational"
+    }
+
+
+@app.get("/{full_path:path}")
+async def catch_all(full_path: str):
+    if full_path.startswith("api"):
+        raise HTTPException(status_code=404, detail="API route not found")
+    index_path = os.path.join(DIST_DIR, "index.html")
+    if os.path.isfile(index_path):
+        return FileResponse(index_path)
+    return {"detail": "Not Found"}
 
 
 if __name__ == "__main__":
